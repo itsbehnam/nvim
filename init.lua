@@ -279,6 +279,9 @@ vim.o.hlsearch = false
 -- Make line numbers default
 vim.wo.number = true
 
+-- Enable relative line numbers
+vim.wo.relativenumber = true
+
 -- Enable mouse mode
 vim.o.mouse = 'a'
 
@@ -309,6 +312,8 @@ vim.o.completeopt = 'menuone,noselect'
 
 -- NOTE: You should make sure your terminal supports this
 vim.o.termguicolors = true
+
+vim.o.scrolloff = 8
 
 -- [[ Basic Keymaps ]]
 
@@ -503,6 +508,14 @@ local on_attach = function(_, bufnr)
     vim.keymap.set('n', keys, func, { buffer = bufnr, desc = desc })
   end
 
+  local vmap = function(keys, func, desc)
+    if desc then
+      desc = 'LSP: ' .. desc
+    end
+
+    vim.keymap.set('v', keys, func, { buffer = bufnr, desc = desc })
+  end
+
   nmap('<leader>rn', vim.lsp.buf.rename, '[R]e[n]ame')
   nmap('<leader>ca', vim.lsp.buf.code_action, '[C]ode [A]ction')
 
@@ -524,6 +537,28 @@ local on_attach = function(_, bufnr)
   nmap('<leader>wl', function()
     print(vim.inspect(vim.lsp.buf.list_workspace_folders()))
   end, '[W]orkspace [L]ist Folders')
+
+  -- Define the mappings
+  vmap('J', [[:m '>+1<CR>gv=gv]], 'Move highlighted region up')
+  vmap('K', [[:m '>-2<CR>gv=gv]], 'Move highlighted region down')
+
+  local wrap_chars = {
+    ["'"] = "'",
+    ['"'] = '"',
+    ['['] = '[]',
+    ['{'] = '{}',
+  }
+
+  -- FIXME: misbehaves when selecting a word in paranthesis
+  -- Function to wrap selected text with specified characters in visual mode
+  local function wrap_selected_text(char)
+    return [[:s/\%V\(.*\)/]] .. char .. [[\1]] .. (char:sub(-1) == '}' and '' or char:sub(-1)) .. [[]]
+  end
+
+  -- Create dynamic mappings for wrapping with specified characters
+  for char, replacement in pairs(wrap_chars) do
+    vmap(char, wrap_selected_text(replacement), 'Wrap selected text with ' .. replacement)
+  end
 
   -- Create a command `:Format` local to the LSP buffer
   vim.api.nvim_buf_create_user_command(bufnr, 'Format', function(_)
