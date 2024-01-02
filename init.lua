@@ -1,7 +1,7 @@
 require('config.keymaps')
 
 -- TODO: move to a better location
-require('lua.lazy')
+require('config.lazy')
 
 -- [[ Configure plugins ]]
 -- NOTE: Here is where you install your plugins.
