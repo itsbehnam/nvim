@@ -11,7 +11,7 @@ return {
     { "<leader>hr", "<cmd>lua require('harpoon'):list():remove()<cr>", desc = "Remove file from harpoon mark" },
     { "<leader>hn", "<cmd>lua require('harpoon'):list():next()<cr>", desc = "Go to next harpoon mark" },
     { "<leader>hp", "<cmd>lua require('harpoon'):list():prev()<cr>", desc = "Go to previous harpoon mark" },
-    { "<leader>ha", "<cmd>lua require('harpoon.ui'):toggle_quick_menu(require('harpoon'):list())<cr>", desc = "Show harpoon marks" },
+    { "<leader>ha", "<cmd>lua require('harpoon').ui:toggle_quick_menu(require('harpoon'):list())<cr>", desc = "Show harpoon marks" },
   },
   config = true
 }
