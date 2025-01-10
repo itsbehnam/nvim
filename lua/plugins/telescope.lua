@@ -91,7 +91,7 @@ return {
       vim.keymap.set('n', '<leader>ss', require('telescope.builtin').builtin, { desc = '[S]earch [S]elect Telescope' })
       vim.keymap.set('n', '<leader>gf', require('telescope.builtin').git_files, { desc = 'Search [G]it [F]iles' })
       vim.keymap.set('n', '<leader>ff', function ()
-        require('telescope.builtin').find_files({ hidden = true })
+        require('telescope.builtin').find_files()
       end, { desc = '[F]iles [F]iles' })
       vim.keymap.set('n', '<leader>sf', require('telescope.builtin').find_files, { desc = '[S]earch [F]iles' })
       vim.keymap.set('n', '<leader>sh', require('telescope.builtin').help_tags, { desc = '[S]earch [H]elp' })
